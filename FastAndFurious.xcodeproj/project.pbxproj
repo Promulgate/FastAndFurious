@@ -219,7 +219,6 @@
 				TargetAttributes = {
 					D501AB0A1E5D1F4100CA073B = {
 						CreatedOnToolsVersion = 8.2;
-						DevelopmentTeam = 3L76772298;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 					};
@@ -443,8 +442,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = 3L76772298;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FastAndFurious/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.vhart.FastAndFurious;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -459,8 +459,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = 3L76772298;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FastAndFurious/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.vhart.FastAndFurious;
 				PRODUCT_NAME = "$(TARGET_NAME)";

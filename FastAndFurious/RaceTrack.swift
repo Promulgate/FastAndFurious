@@ -1,4 +1,6 @@
-@objc protocol RaceTrackObservable {}
+@objc protocol RaceTrackObservable {
+    func racecarsDidMove(distancesForIdentifiers: [String: Float])
+}
 
 class RaceTrack: NSObject {
 
@@ -9,21 +11,35 @@ class RaceTrack: NSObject {
     }
 
     // Raceables
-    // let trackLength: Float
+    let racecars: [FFRaceable]
+    let trackLength: Float
     // observer
+    weak var observer: RaceTrackObservable?
 
     fileprivate var timer: Timer?
     fileprivate var distancesForIdentifiers: [String: Float] = [:]
     fileprivate var status: RaceStatus = .unstarted
+    fileprivate let timeInterval = 0.15
 
-    init() {
-        self.timer = nil
+    init(racecars: [FFRaceable],
+         trackLength: Float,
+         observer: RaceTrackObservable) {
+        self.racecars = racecars
+        self.trackLength = trackLength
+        self.observer = observer
+        super.init()
+        reset()
     }
 
 
     func startRace() {
         //Timer
-
+        timer = Timer.scheduledTimer(timeInterval: timeInterval,
+                                     target: self,
+                                     selector: #selector(updateDistances),
+                                     userInfo: nil,
+                                     repeats: true)
+        
         status = .started
     }
 
@@ -42,7 +58,7 @@ class RaceTrack: NSObject {
     var winnersIdentifier: String? {
         guard winnerExists else { return nil }
         return distancesForIdentifiers.map { $0 }
-            .filter { $0.value >= 1 /*self.trackLength*/ }
+            .filter { $0.value >= self.trackLength }
             .sorted { $0.1 < $1.1 }
             .first?
             .key
@@ -51,7 +67,7 @@ class RaceTrack: NSObject {
     @objc fileprivate func updateDistances() {
         guard status != .ended else { return }
 
-        for car in raceCars {
+        for car in racecars {
             guard let currentDistance = distancesForIdentifiers[car.racecarID]
                 else { fatalError("Distances should exist for all cars") }
             distancesForIdentifiers[car.racecarID] = generateNewDistance(for: car) + currentDistance
@@ -61,7 +77,7 @@ class RaceTrack: NSObject {
             endRace()
         }
 
-        observer?.raceCarsDidMove(distancesForIdentifiers: distancesForIdentifiers)
+        observer?.racecarsDidMove(distancesForIdentifiers: distancesForIdentifiers)
     }
 
     func reset() {
@@ -71,7 +87,7 @@ class RaceTrack: NSObject {
         status = .unstarted
 
         distancesForIdentifiers.removeAll(keepingCapacity: true)
-        for car in raceCars {
+        for car in racecars {
             distancesForIdentifiers[car.racecarID] = 0
         }
     }
